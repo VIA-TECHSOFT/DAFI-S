@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAFI'S - Transporte que Conecta, Mobilidade que Transforma</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Ícones FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            darkest: '#0D2B4D', // Azul escuro oficial do design system
+                            dark: '#0076AB',    // Azul médio das rotas principais
+                            light: '#03A6B6',   // Ciano de destaque ativo
+                            accent: '#009DB0',  // Tom de transição dinâmica
+                            gray: '#E6F4F8',    // Fundo cinza suave azulado
+                            textDark: '#0D2B4D' // Cor de legibilidade para textos
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Roboto', 'sans-serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #E6F4F8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0076AB;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0D2B4D;
+        }
+        .phone-shadow {
+            box-shadow: 0 25px 60px -15px rgba(13, 43, 77, 0.45);
+        }
+        @keyframes pulse-marker {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.9; }
+            100% { transform: scale(0.95); opacity: 0.5; }
+        }
+        .pulse-effect {
+            animation: pulse-marker 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-[#f0f4f8] font-sans text-brand-darkest flex flex-col min-h-screen selection:bg-brand-light selection:text-white">
+
+    <div id="toast-notification" class="fixed top-6 right-6 z-[9999] transform translate-y-[-150%] opacity-0 transition-all duration-300 max-w-sm w-full bg-white border-l-4 border-brand-light rounded-xl shadow-2xl p-4 flex items-start space-x-3 pointer-events-none">
+        <div class="bg-brand-light/10 text-brand-dark p-2 rounded-lg">
+            <i class="fa-solid fa-circle-info text-lg"></i>
+        </div>
+        <div class="flex-1">
+            <p class="font-montserrat font-bold text-xs text-brand-darkest">DAFI'S</p>
+            <p id="toast-message" class="text-xs text-gray-600 mt-1">Ação realizada com sucesso!</p>
+        </div>
+        <button onclick="closeToast()" class="text-gray-400 hover:text-gray-600 pointer-events-auto">
+            <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+    </div>
+
+    <header class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            
+            <!-- Logótipo Oficial Imagem Direta no Cabeçalho -->
+            <div class="flex items-center">
+                <a href="#inicio" class="flex items-center">
+                    <img src="logo-removebg-preview_3.png" alt="DAFI'S" class="h-16 w-auto object-contain" onerror="this.onerror=null; this.src='https://placehold.co/160x50/025375/FFFFFF?text=DAFI%27S';">
+                </a>
+            </div>
+
+            <!-- Navegação Web -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="#inicio" class="font-montserrat font-bold text-brand-dark hover:text-brand-light transition text-sm">Portal Principal</a>
+                <a href="#detalhes" class="font-montserrat font-semibold text-gray-600 hover:text-brand-dark transition text-sm">Nossa Frota</a>
+                <a href="#recursos" class="font-montserrat font-semibold text-gray-600 hover:text-brand-dark transition text-sm">Serviços Integrados</a>
+                <a href="#simulador" class="font-montserrat font-semibold text-gray-600 hover:text-brand-dark transition text-sm flex items-center">
+                    <span class="relative flex h-2 w-2 mr-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-light opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-light"></span>
+                    </span>
+                    Protótipo Interativo
+                </a>
+            </nav>
+
+            <!-- Ação de Demonstração -->
+            <div>
+                <a href="#simulador" class="bg-brand-dark hover:bg-brand-darkest text-white px-6 py-2.5 rounded-xl font-montserrat font-bold text-xs tracking-wide transition shadow-md shadow-brand-dark/20 flex items-center space-x-2">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                    <span>Navegar no Protótipo</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENTOR PRINCIPAL -->
+    <main class="flex-grow">
+        
+        <section id="inicio" class="relative bg-gradient-to-br from-[#0D2B4D] via-[#0076AB] to-[#03A6B6] text-white py-12 px-6 overflow-hidden min-h-[calc(100vh-80px)] flex items-center">
+            <!-- Detalhes decorativos de fundo -->
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-brand-light/20 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-36 -left-36 w-[500px] h-[500px] bg-brand-darkest/40 rounded-full blur-2xl"></div>
+
+            <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Lado Esquerdo: Apresentação Web e Valores baseados na nova ID -->
+                <div class="lg:col-span-7 space-y-8 z-10">
+                    <span class="inline-block bg-brand-light/20 text-white border border-brand-light/30 px-4 py-1.5 rounded-full text-xs font-montserrat font-bold uppercase tracking-wider">
+                        DAFI'S MOBILIDADE
+                    </span>
+                    
+                    <h1 class="font-montserrat font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight leading-tight">
+                        Transporte que conecta, <br>
+                        <span class="text-brand-accent">mobilidade que transforma.</span>
+                    </h1>
+                    
+                    <p class="text-base text-gray-200 max-w-xl font-light leading-relaxed">
+                        Inovação, tecnologia e compromisso absoluto com a mobilidade urbana inteligente. Mais eficiência, integração simplificada e qualidade de vida na sua jornada diária com a <strong>DAFI'S</strong>.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                        <div class="flex items-center space-x-3.5 bg-white/5 p-4 rounded-xl border border-white/10 hover:border-brand-light/30 transition">
+                            <span class="bg-brand-dark p-2 rounded-lg text-brand-light">
+                                <i class="fa-solid fa-bus text-lg"></i>
+                            </span>
+                            <div class="text-xs">
+                                <p class="font-bold font-montserrat">Rotas e horários ao vivo</p>
+                                <p class="text-gray-300">Monitorização das linhas com precisão GPS</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3.5 bg-white/5 p-4 rounded-xl border border-white/10 hover:border-brand-light/30 transition">
+                            <span class="bg-brand-dark p-2 rounded-lg text-brand-light">
+                                <i class="fa-solid fa-wallet text-lg"></i>
+                            </span>
+                            <div class="text-xs">
+                                <p class="font-bold font-montserrat">Recarga de créditos online</p>
+                                <p class="text-gray-300">Saldo instantâneo e simples via PIX</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3.5 bg-white/5 p-4 rounded-xl border border-white/10 hover:border-brand-light/30 transition">
+                            <span class="bg-brand-dark p-2 rounded-lg text-brand-light">
+                                <i class="fa-solid fa-route text-lg"></i>
+                            </span>
+                            <div class="text-xs">
+                                <p class="font-bold font-montserrat">Integração de linhas</p>
+                                <p class="text-gray-300">Conexão tarifária simplificada e unificada</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3.5 bg-white/5 p-4 rounded-xl border border-white/10 hover:border-brand-light/30 transition">
+                            <span class="bg-brand-dark p-2 rounded-lg text-brand-light">
+                                <i class="fa-solid fa-bell text-lg"></i>
+                            </span>
+                            <div class="text-xs">
+                                <p class="font-bold font-montserrat">Notificações e alertas</p>
+                                <p class="text-gray-300">Informativos rápidos de trânsito e rotas</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lojas Virtuais -->
+                    <div class="flex flex-wrap gap-4 items-center pt-2">
+                        <div class="text-xs text-gray-400 font-montserrat font-semibold">Simulador de aplicação disponível ao lado:</div>
+                        <a href="#simulador" class="bg-white/10 hover:bg-white/15 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 border border-white/10 transition">
+                            <i class="fa-brands fa-apple text-sm"></i> App Store
+                        </a>
+                        <a href="#simulador" class="bg-white/10 hover:bg-white/15 px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 border border-white/10 transition">
+                            <i class="fa-brands fa-google-play text-sm"></i> Google Play
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Lado Direito: Simulador de Smartphone em Tempo Real -->
+                <div id="simulador" class="lg:col-span-5 flex flex-col items-center justify-center z-10">
+                    
+                    <!-- Estrutura Externa do Smartphone -->
+                    <div class="relative mx-auto border-[11px] border-[#0c1820] bg-[#0c1820] rounded-[48px] phone-shadow w-72 sm:w-[325px] h-[610px] overflow-hidden">
+                        
+                        <!-- Notch da Câmara Frontal -->
+                        <div class="absolute top-0 inset-x-0 h-6 bg-[#0c1820] z-50 flex items-center justify-center">
+                            <div class="w-28 h-4 bg-black rounded-b-xl flex justify-center items-center">
+                                <div class="w-10 h-1 bg-gray-800 rounded-full"></div>
+                                <div class="w-1.5 h-1.5 ml-2 bg-gray-900 rounded-full"></div>
+                            </div>
+                        </div>
+
+                        <!-- Barra de Estado Móvel -->
+                        <div class="absolute top-6 left-0 right-0 h-6 bg-[#0076AB] z-40 flex justify-between items-center px-6 text-white text-[10px] font-semibold font-mono">
+                            <span>15:15</span>
+                            <div class="flex items-center space-x-1.5 text-[8px]">
+                                <i class="fa-solid fa-wifi"></i>
+                                <i class="fa-solid fa-signal"></i>
+                                <i class="fa-solid fa-battery-three-quarters text-[9px]"></i>
+                            </div>
+                        </div>
+
+                        <!-- ÁREA DE VISUALIZAÇÃO INTERATIVA -->
+                        <div class="w-full h-full pt-12 pb-12 bg-white overflow-y-auto relative flex flex-col justify-between">
+                            
+                            <!-- ECRÃ 1: SPLASH SCREEN (Fidelidade Absoluta a logo-removebg-preview_3.png) -->
+                            <div id="scr-splash" class="absolute inset-0 pt-12 pb-12 bg-[#0076AB] flex flex-col justify-between items-center z-30 transition-all duration-300">
+                                <div class="flex-grow flex flex-col justify-center items-center text-center px-6 w-full">
+                                    
+                                    <!-- Logótipo Oficial Imagem Direta no Splash -->
+                                    <div class="w-full mb-4 flex justify-center items-center bg-white/5 p-4 rounded-2xl border border-white/10 shadow-inner">
+                                        <img src="logo-removebg-preview_3.png" alt="DAFI'S Logo" class="w-full h-auto object-contain brightness-0 invert" onerror="this.onerror=null; this.src='https://placehold.co/240x180/0076AB/FFFFFF?text=DAFI%27S';">
+                                    </div>
+                                    
+                                    <button onclick="navTo('home')" class="mt-4 bg-brand-light hover:bg-brand-accent text-white px-8 py-3 rounded-xl font-montserrat font-bold text-xs uppercase tracking-wider shadow-lg transition animate-pulse">
+                                        Entrar no App
+                                    </button>
+                                </div>
+
+                                <div class="w-full px-5 text-center">
+                                    <p class="text-[8px] text-white/50 font-medium">DAFI'S • 2026</p>
+                                </div>
+                            </div>
+
+                            <!-- ECRÃ 2: HOME SCREEN ("Olá, Lucas!") -->
+                            <div id="scr-home" class="absolute inset-0 pt-12 pb-12 bg-[#F5F8FA] flex flex-col z-20 transition-all duration-300">
+                                <!-- Cabeçalho do Ecrã Principal -->
+                                <div class="bg-brand-dark p-4 text-white rounded-b-3xl shadow-md">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <p class="text-[10px] text-white/70">Bem-vindo,</p>
+                                            <h3 class="font-montserrat font-bold text-base leading-tight">Olá, Lucas!</h3>
+                                        </div>
+                                        <div class="bg-white/10 h-7 w-7 rounded-lg flex items-center justify-center text-white">
+                                            <i class="fa-solid fa-user text-xs"></i>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Caixa de Pesquisa -->
+                                    <div class="relative mt-3">
+                                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-gray-400 text-[10px]"></i>
+                                        <input type="text" placeholder="Para onde vamos?" class="w-full bg-white text-gray-800 rounded-xl pl-8 pr-4 py-2.5 text-[10px] focus:outline-none shadow-inner cursor-pointer" readonly onclick="navTo('map')">
+                                    </div>
+
+                                    <!-- Botões de Ação Rápida baseados no mockup original -->
+                                    <div class="flex gap-2.5 mt-3.5">
+                                        <button onclick="navTo('map')" class="flex-1 bg-brand-light hover:bg-brand-accent text-white font-montserrat font-bold text-[9px] py-2 px-2 rounded-lg transition uppercase tracking-wider text-center">
+                                            LINHAS
+                                        </button>
+                                        <button onclick="navTo('card')" class="flex-1 bg-brand-darkest hover:bg-brand-dark text-white font-montserrat font-bold text-[9px] py-2 px-2 rounded-lg transition uppercase tracking-wider text-center">
+                                            CARTÕES
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Lista de Horários de Ônibus conforme "dafi s prototipo 1.jpeg" -->
+                                <div class="p-4 flex-grow overflow-y-auto">
+                                    <div class="flex justify-between items-center mb-3">
+                                        <span class="text-[10px] font-bold text-brand-darkest font-montserrat uppercase tracking-wide">Próximos ônibus</span>
+                                        <span class="text-[8px] text-brand-light font-bold flex items-center gap-1">
+                                            <span class="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-ping"></span> Ao vivo
+                                        </span>
+                                    </div>
+
+                                    <!-- Lista de Rotas conforme imagem de referência -->
+                                    <div class="space-y-2.5">
+                                        <!-- Cartão de Linha 1 -->
+                                        <div onclick="navTo('map')" class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center cursor-pointer hover:border-brand-dark hover:shadow transition">
+                                            <div class="flex items-center space-x-2.5">
+                                                <div class="bg-brand-dark/10 h-8 w-8 rounded-lg flex items-center justify-center text-brand-dark">
+                                                    <i class="fa-solid fa-bus text-sm"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-[10px] font-bold text-gray-900 leading-tight">Centro / Term. Central</h4>
+                                                    <p class="text-[8px] text-gray-500">Via Avenida Principal</p>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <span class="bg-emerald-100 text-emerald-800 text-[8px] font-extrabold px-1.5 py-0.5 rounded">5 min</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Cartão de Linha 2 -->
+                                        <div onclick="navTo('map')" class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center cursor-pointer hover:border-brand-dark hover:shadow transition">
+                                            <div class="flex items-center space-x-2.5">
+                                                <div class="bg-brand-dark/10 h-8 w-8 rounded-lg flex items-center justify-center text-brand-dark">
+                                                    <i class="fa-solid fa-bus text-sm"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-[10px] font-bold text-gray-900 leading-tight">Bairro / Centro</h4>
+                                                    <p class="text-[8px] text-gray-500">Linha Direta Expresso</p>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <span class="bg-brand-light/20 text-brand-dark text-[8px] font-extrabold px-1.5 py-0.5 rounded">12 min</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Cartão de Linha 3 -->
+                                        <div onclick="navTo('map')" class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center cursor-pointer hover:border-brand-dark hover:shadow transition">
+                                            <div class="flex items-center space-x-2.5">
+                                                <div class="bg-brand-dark/10 h-8 w-8 rounded-lg flex items-center justify-center text-brand-dark">
+                                                    <i class="fa-solid fa-bus text-sm"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="text-[10px] font-bold text-gray-900 leading-tight">Hospital / Centro</h4>
+                                                    <p class="text-[8px] text-gray-500">Integração Regional</p>
+                                                </div>
+                                            </div>
+                                            <div class="text-right">
+                                                <span class="bg-gray-100 text-gray-600 text-[8px] font-extrabold px-1.5 py-0.5 rounded">18 min</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Botão de Ação Inferior -->
+                                    <button onclick="navTo('map')" class="w-full mt-4 bg-brand-dark hover:bg-brand-darkest text-white py-2.5 rounded-xl text-[9px] font-montserrat font-bold transition flex items-center justify-center gap-1.5">
+                                        <span>Ver todas as linhas</span>
+                                        <i class="fa-solid fa-angle-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- ECRÃ 3: MAP SCREEN (Linha 02) -->
+                            <div id="scr-map" class="absolute inset-0 pt-12 pb-12 bg-gray-100 flex flex-col z-10 transition-all duration-300">
+                                <!-- Navegação de Topo do Mapa -->
+                                <div class="bg-brand-dark p-3 text-white flex items-center justify-between shadow-md">
+                                    <div class="flex items-center space-x-2.5">
+                                        <button onclick="navTo('home')" class="hover:text-brand-light transition text-xs">
+                                            <i class="fa-solid fa-arrow-left"></i>
+                                        </button>
+                                        <span class="font-montserrat font-bold text-xs tracking-wide">Mapa</span>
+                                    </div>
+                                    <button onclick="navTo('home')" class="text-white/80 hover:text-white transition text-xs">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Interface Simulada do Mapa -->
+                                <div class="relative flex-grow bg-[#E1EAF0] overflow-hidden">
+                                    <div class="absolute inset-0">
+                                        <svg class="w-full h-full opacity-45" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                            <line x1="20" y1="0" x2="20" y2="100" stroke="#FFFFFF" stroke-width="3" />
+                                            <line x1="50" y1="0" x2="50" y2="100" stroke="#FFFFFF" stroke-width="4" />
+                                            <line x1="80" y1="0" x2="80" y2="100" stroke="#FFFFFF" stroke-width="3" />
+                                            <line x1="0" y1="30" x2="100" y2="30" stroke="#FFFFFF" stroke-width="3" />
+                                            <line x1="0" y1="65" x2="100" y2="65" stroke="#FFFFFF" stroke-width="4" />
+                                            
+                                            <!-- Percurso do Ônibus -->
+                                            <path d="M 20,80 L 50,50 L 50,20" fill="none" stroke="#0076AB" stroke-width="4" stroke-linecap="round" />
+                                            
+                                            <!-- Paragens do Percurso -->
+                                            <circle cx="20" cy="80" r="3.5" fill="#03A6B6" stroke="#FFFFFF" stroke-width="1" />
+                                            <circle cx="50" cy="50" r="3.5" fill="#0076AB" stroke="#FFFFFF" stroke-width="1" />
+                                            <circle cx="50" cy="20" r="3.5" fill="#03A6B6" stroke="#FFFFFF" stroke-width="1" />
+                                        </svg>
+                                    </div>
+
+                                    <!-- Marcador animado no mapa -->
+                                    <div class="absolute top-[45%] left-[45%] translate-x-[-50%] translate-y-[-50%] z-20">
+                                        <div class="pulse-effect absolute -inset-2 bg-brand-light rounded-full opacity-40"></div>
+                                        <div class="bg-brand-dark text-white rounded-full p-2 shadow-lg border border-white flex items-center justify-center relative">
+                                            <i class="fa-solid fa-bus text-[9px]"></i>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Caixa de Informação do Ponto de Interesse -->
+                                    <div class="absolute top-[35%] left-[24%] bg-white text-gray-800 text-[7px] font-extrabold px-1.5 py-0.5 rounded-md shadow-md border border-gray-100 flex items-center gap-1">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-brand-light"></span> Terminal Central
+                                    </div>
+                                </div>
+
+                                <!-- Painel Inferior Deslizante -->
+                                <div class="bg-white p-3 rounded-t-2xl shadow-2xl border-t border-gray-100 z-20">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div>
+                                            <span class="text-[9px] text-brand-dark font-bold uppercase tracking-widest font-montserrat">Linha 02</span>
+                                            <h4 class="text-xs font-bold text-gray-900 leading-tight">Terminal Central ➔ Bairro</h4>
+                                        </div>
+                                        <span class="bg-emerald-100 text-emerald-800 text-[8px] font-extrabold px-2 py-0.5 rounded">5 min restantes</span>
+                                    </div>
+                                    <p class="text-[9px] text-gray-500 mb-3 leading-snug">
+                                        Autocarro climatizado equipado com rede Wi-Fi gratuita e carregadores USB.
+                                    </p>
+                                    <div class="flex gap-2">
+                                        <button onclick="showToastNotification('DAFI\'S', 'Linha adicionada aos seus trajetos favoritos.')" class="flex-1 bg-gray-100 text-gray-700 hover:bg-gray-200 text-[10px] py-2 rounded-xl font-bold flex items-center justify-center gap-1 transition">
+                                            <i class="fa-solid fa-star text-amber-500"></i> Favoritar
+                                        </button>
+                                        <button onclick="showToastNotification('DAFI\'S', 'Acompanhando percurso da Linha 02 em tempo real.')" class="flex-1 bg-brand-dark hover:bg-brand-darkest text-white text-[10px] py-2 rounded-xl font-bold transition">
+                                            Acompanhar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ECRÃ 4: DIGITAL WALLET / CARD SCREEN (Meu Cartão) -->
+                            <div id="scr-card" class="absolute inset-0 pt-12 pb-12 bg-[#F5F8FA] flex flex-col z-10 transition-all duration-300">
+                                <!-- Cabeçalho da Carteira -->
+                                <div class="bg-brand-dark p-3 text-white flex items-center justify-between shadow-md">
+                                    <div class="flex items-center space-x-2.5">
+                                        <button onclick="navTo('home')" class="hover:text-brand-light transition text-xs">
+                                            <i class="fa-solid fa-arrow-left"></i>
+                                        </button>
+                                        <span class="font-montserrat font-bold text-xs tracking-wide">Meu Cartão</span>
+                                    </div>
+                                    <i class="fa-solid fa-ellipsis-vertical text-xs opacity-75"></i>
+                                </div>
+
+                                <div class="p-4 flex-grow overflow-y-auto space-y-4">
+                                    <!-- Cartão de Transporte Virtual Inteligente (Usando o logo-removebg-preview_3.png com alta visibilidade) -->
+                                    <div class="bg-gradient-to-br from-brand-dark via-brand-light to-brand-darkest p-4 rounded-xl text-white shadow-lg relative overflow-hidden">
+                                        <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-brand-light/15 rounded-full blur-xl"></div>
+                                        <div class="flex justify-between items-start">
+                                            <!-- Logo Oficial Imagem Direta no Cartão em Contraste Branco -->
+                                            <img src="logo-removebg-preview_3.png" alt="DAFI'S Logo" class="h-10 w-auto object-contain brightness-0 invert" onerror="this.onerror=null; this.src='https://placehold.co/120x40/FFFFFF/025375?text=DAFI%27S';">
+                                            <i class="fa-solid fa-wifi text-[10px] text-brand-light rotate-90 text-white/80"></i>
+                                        </div>
+                                        <p class="text-[5px] text-white/75 tracking-wider uppercase font-semibold mt-3">TRANSPORTE QUE CONECTA, MOBILIDADE QUE TRANSFORMA.</p>
+                                        
+                                        <div class="mt-4">
+                                            <p class="text-[9px] font-mono tracking-widest text-white/90">•••• •••• •••• 5824</p>
+                                            <div class="flex justify-between items-end mt-1">
+                                                <span class="text-[8px] uppercase tracking-wide text-gray-300 font-bold">LUCAS S. SILVA</span>
+                                                <span class="text-[8px] bg-white/20 px-1.5 py-0.5 rounded text-white font-extrabold uppercase font-montserrat text-[7px]">INTEGRAÇÃO</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Exibição de Saldo conforme "dafi s prototipo 1.jpeg" -->
+                                    <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center">
+                                        <div>
+                                            <p class="text-[8px] text-gray-400 uppercase font-bold tracking-wide">Saldo Atual</p>
+                                            <h3 id="card-balance" class="text-base font-montserrat font-extrabold text-brand-dark mt-0.5">R$ 24,40</h3>
+                                        </div>
+                                        <button onclick="rechargeCredits()" class="bg-[#0076AB] hover:bg-brand-light text-white font-montserrat font-bold text-[9px] py-2 px-3 rounded-lg flex items-center gap-1 transition uppercase tracking-wider">
+                                            <i class="fa-solid fa-plus-circle"></i> RECARREGAR
+                                        </button>
+                                    </div>
+
+                                    <!-- Lista de Opções da Carteira -->
+                                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 divide-y divide-gray-100">
+                                        <button class="w-full p-2.5 flex items-center justify-between text-left hover:bg-gray-50 transition" onclick="showToastNotification('DAFI\'S', 'A abrir o extrato detalhado de transações...')">
+                                            <span class="text-[10px] text-gray-700 font-bold flex items-center gap-2">
+                                                <i class="fa-regular fa-file-lines text-brand-dark"></i> Extrato
+                                            </span>
+                                            <i class="fa-solid fa-angle-right text-[9px] text-gray-400"></i>
+                                        </button>
+                                        <button class="w-full p-2.5 flex items-center justify-between text-left hover:bg-gray-50 transition" onclick="showToastNotification('DAFI\'S', 'A listar os cartões cadastrados...')">
+                                            <span class="text-[10px] text-gray-700 font-bold flex items-center gap-2">
+                                                <i class="fa-solid fa-credit-card text-brand-dark"></i> Meus cartões
+                                            </span>
+                                            <i class="fa-solid fa-angle-right text-[9px] text-gray-400"></i>
+                                        </button>
+                                        <button class="w-full p-2.5 flex items-center justify-between text-left hover:bg-gray-50 transition" onclick="rechargeCredits()">
+                                            <span class="text-[10px] text-gray-700 font-bold flex items-center gap-2">
+                                                <i class="fa-solid fa-receipt text-brand-dark"></i> Recarga
+                                            </span>
+                                            <i class="fa-solid fa-angle-right text-[9px] text-gray-400"></i>
+                                        </button>
+                                        <button class="w-full p-2.5 flex items-center justify-between text-left hover:bg-gray-50 transition" onclick="showToastNotification('DAFI\'S', 'A carregar as configurações de perfil...')">
+                                            <span class="text-[10px] text-gray-700 font-bold flex items-center gap-2">
+                                                <i class="fa-solid fa-sliders text-brand-dark"></i> Configurações
+                                            </span>
+                                            <i class="fa-solid fa-angle-right text-[9px] text-gray-400"></i>
+                                        </button>
+                                        <button class="w-full p-2.5 flex items-center justify-between text-left hover:bg-gray-50 transition" onclick="showToastNotification('DAFI\'S', 'A aceder ao suporte de atendimento...')">
+                                            <span class="text-[10px] text-gray-700 font-bold flex items-center gap-2">
+                                                <i class="fa-solid fa-circle-question text-brand-dark"></i> Ajuda
+                                            </span>
+                                            <i class="fa-solid fa-angle-right text-[9px] text-gray-400"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- MENU DE NAVEGAÇÃO PERSISTENTE DO TELEMÓVEL -->
+                            <div class="absolute bottom-0 left-0 right-0 h-12 bg-white border-t border-gray-100 z-45 flex justify-around items-center px-4 text-gray-400">
+                                <button onclick="navTo('home')" class="flex flex-col items-center justify-center w-10 py-1 transition focus:outline-none" id="tab-home">
+                                    <i class="fa-solid fa-house text-xs"></i>
+                                    <span class="text-[8px] mt-0.5 font-bold">Início</span>
+                                </button>
+                                <button onclick="navTo('map')" class="flex flex-col items-center justify-center w-10 py-1 transition focus:outline-none" id="tab-map">
+                                    <i class="fa-solid fa-map text-xs"></i>
+                                    <span class="text-[8px] mt-0.5 font-bold">Mapa</span>
+                                </button>
+                                <button onclick="navTo('card')" class="flex flex-col items-center justify-center w-10 py-1 transition focus:outline-none" id="tab-card">
+                                    <i class="fa-solid fa-wallet text-xs"></i>
+                                    <span class="text-[8px] mt-0.5 font-bold">Carteira</span>
+                                </button>
+                                <button onclick="navTo('splash')" class="flex flex-col items-center justify-center w-10 py-1 transition focus:outline-none text-red-400 hover:text-red-600">
+                                    <i class="fa-solid fa-power-off text-xs"></i>
+                                    <span class="text-[8px] mt-0.5 font-bold">Reiniciar</span>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECÇÃO DE DETALHES DA FROTA -->
+        <section id="detalhes" class="py-20 px-6 bg-white text-brand-darkest">
+            <div class="max-w-7xl mx-auto space-y-12">
+                <div class="text-center max-w-2xl mx-auto space-y-3">
+                    <span class="text-brand-light font-montserrat font-bold text-xs uppercase tracking-widest">Nossa Frota</span>
+                    <h2 class="font-montserrat font-extrabold text-2xl sm:text-3xl text-brand-darkest">
+                        Compromisso com o Conforto e a Sustentabilidade
+                    </h2>
+                    <p class="text-gray-500 text-sm font-light leading-relaxed">
+                        A frota operada pela DAFI'S atende a padrões de conformidade ambiental, com acessibilidade total e tecnologia de monitoramento integrado.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    <!-- Esquerda: Cartão de Imagem da Frota -->
+                    <div class="lg:col-span-6 rounded-2xl overflow-hidden shadow-xl border border-gray-100 relative group">
+                        <img src="https://placehold.co/600x400/025375/FFFFFF?text=DAFI%27S+Mobilidade" alt="DAFI'S Frota Sustentável" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-500">
+                        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-white">
+                            <p class="font-montserrat font-bold text-base">Novo Modelo Climatizado DAFI'S</p>
+                            <p class="text-xs text-brand-light">Redução direta de emissões de gases nocivos e conforto ampliado.</p>
+                        </div>
+                    </div>
+
+                    <!-- Direita: Diferenciais Técnicos -->
+                    <div class="lg:col-span-6 space-y-6">
+                        <h3 class="font-montserrat font-bold text-xl text-brand-dark flex items-center">
+                            <i class="fa-solid fa-circle-check text-brand-light mr-3"></i>
+                            Padrão de Viagem DAFI'S
+                        </h3>
+                        <p class="text-gray-600 text-sm font-light leading-relaxed">
+                            A estrutura das nossas linhas e veículos é planeada continuamente para garantir que a experiência de mobilidade seja segura, confortável e prática diariamente.
+                        </p>
+
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-3.5">
+                                <span class="bg-brand-dark/10 text-brand-dark p-2 rounded-lg text-xs mt-0.5">
+                                    <i class="fa-solid fa-snowflake"></i>
+                                </span>
+                                <div>
+                                    <strong class="text-brand-darkest text-sm font-montserrat">Ar Condicionado Ativo</strong>
+                                    <p class="text-xs text-gray-500">Climatização automática e constante em todas as viagens operadas.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3.5">
+                                <span class="bg-brand-dark/10 text-brand-dark p-2 rounded-lg text-xs mt-0.5">
+                                    <i class="fa-solid fa-wheelchair"></i>
+                                </span>
+                                <div>
+                                    <strong class="text-brand-darkest text-sm font-montserrat">Acessibilidade Total</strong>
+                                    <p class="text-xs text-gray-500">Plataformas integradas para acesso seguro a cadeirantes e pessoas com mobilidade reduzida.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3.5">
+                                <span class="bg-brand-dark/10 text-brand-dark p-2 rounded-lg text-xs mt-0.5">
+                                    <i class="fa-solid fa-wifi"></i>
+                                </span>
+                                <div>
+                                    <strong class="text-brand-darkest text-sm font-montserrat">Conexão Wi-Fi de Alta Velocidade</strong>
+                                    <p class="text-xs text-gray-500">Ligue-se gratuitamente durante todo o seu trajeto com estabilidade.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VALORES CORPORATIVOS -->
+        <section id="recursos" class="py-20 px-6 bg-brand-gray border-t border-b border-gray-200">
+            <div class="max-w-7xl mx-auto space-y-12">
+                <div class="text-center max-w-2xl mx-auto space-y-2">
+                    <span class="text-brand-light font-montserrat font-bold text-xs uppercase tracking-widest">Valores de Marca</span>
+                    <h2 class="font-montserrat font-extrabold text-2xl sm:text-3xl text-brand-darkest">O que nos Move</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+                    <!-- Inovação -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition">
+                        <div class="bg-brand-dark/10 text-brand-dark w-10 h-10 rounded-xl flex items-center justify-center text-lg mb-4">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <h4 class="font-montserrat font-bold text-sm text-brand-darkest mb-2">Inovação</h4>
+                        <p class="text-gray-500 text-xs font-light leading-relaxed font-sans">
+                            Utilização de tecnologia ágil para redesenhar a experiência diária do transporte.
+                        </p>
+                    </div>
+
+                    <!-- Respeito -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition">
+                        <div class="bg-brand-dark/10 text-brand-dark w-10 h-10 rounded-xl flex items-center justify-center text-lg mb-4">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+                        <h4 class="font-montserrat font-bold text-sm text-brand-darkest mb-2">Respeito</h4>
+                        <p class="text-gray-500 text-xs font-light leading-relaxed font-sans">
+                            Atenção, empatia e dignidade em todos os contactos com os nossos utilizadores.
+                        </p>
+                    </div>
+
+                    <!-- Segurança -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition">
+                        <div class="bg-brand-dark/10 text-brand-dark w-10 h-10 rounded-xl flex items-center justify-center text-lg mb-4">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h4 class="font-montserrat font-bold text-sm text-brand-darkest mb-2">Segurança</h4>
+                        <p class="text-gray-500 text-xs font-light leading-relaxed font-sans">
+                            Garantia e foco prioritário no bem-estar de passageiros e colaboradores em todas as viagens.
+                        </p>
+                    </div>
+
+                    <!-- Sustentabilidade -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition">
+                        <div class="bg-brand-dark/10 text-brand-dark w-10 h-10 rounded-xl flex items-center justify-center text-lg mb-4">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <h4 class="font-montserrat font-bold text-sm text-brand-darkest mb-2">Sustentabilidade</h4>
+                        <p class="text-gray-500 text-xs font-light leading-relaxed font-sans">
+                            Procura contínua de soluções que respeitem o meio ambiente e tragam equilíbrio ecológico.
+                        </p>
+                    </div>
+
+                    <!-- Responsabilidade -->
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition">
+                        <div class="bg-brand-dark/10 text-brand-dark w-10 h-10 rounded-xl flex items-center justify-center text-lg mb-4">
+                            <i class="fa-solid fa-handshake"></i>
+                        </div>
+                        <h4 class="font-montserrat font-bold text-sm text-brand-darkest mb-2">Responsabilidade</h4>
+                        <p class="text-gray-500 text-xs font-light leading-relaxed font-sans">
+                            Gestão ética, íntegra e orientada para o desenvolvimento do bem-estar social.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- RODAPÉ DO PORTAL -->
+    <footer class="bg-brand-darkest text-gray-400 py-12 px-6 border-t border-white/10">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                <!-- Logótipo Oficial Imagem Direta no Rodapé em Alto Contraste (Branco) -->
+                <div class="flex items-center">
+                    <img src="logo-removebg-preview_3.png" alt="DAFI'S Logo" class="h-20 w-auto object-contain brightness-0 invert" onerror="this.onerror=null; this.src='https://placehold.co/160x50/FFFFFF/033956?text=DAFI%27S';">
+                </div>
+                <span class="text-[8px] font-montserrat uppercase tracking-[0.2em] text-brand-light font-bold mt-2">
+                    Mobilidade Urbana Inteligente
+                </span>
+            </div>
+            
+            <div class="text-[11px] text-center md:text-right">
+                <p>DAFI'S - Todos os Direitos Reservados • 2026</p>
+                <p class="text-gray-500 mt-1">Protótipo Funcional Interativo de Alta Fidelidade.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERATIVIDADE E CONTROLE DO SIMULADOR (JavaScript) -->
+    <script>
+        // Variáveis globais de controle de estado
+        let currentScreen = 'splash';
+        let walletBalance = 24.40;
+
+        // Sistema personalizado de notificações e alertas (Toasts)
+        function showToastNotification(title, text) {
+            const toast = document.getElementById('toast-notification');
+            const toastMsg = document.getElementById('toast-message');
+            const toastHeader = toast.querySelector('p.font-montserrat');
+            
+            toastHeader.innerText = title;
+            toastMsg.innerText = text;
+            
+            // Transição para revelar o Toast
+            toast.classList.remove('translate-y-[-150%]', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            // Fecho automático após tempo determinado
+            setTimeout(() => {
+                closeToast();
+            }, 4000);
+        }
+
+        function closeToast() {
+            const toast = document.getElementById('toast-notification');
+            toast.classList.add('translate-y-[-150%]', 'opacity-0');
+            toast.classList.remove('translate-y-0', 'opacity-100');
+        }
+
+        // Navegação entre ecrãs do smartphone virtual
+        function navTo(screenId) {
+            const screens = ['splash', 'home', 'map', 'card'];
+            
+            screens.forEach(s => {
+                const screenEl = document.getElementById(`scr-${s}`);
+                if (s === screenId) {
+                    screenEl.classList.remove('opacity-0', 'pointer-events-none');
+                    screenEl.classList.add('opacity-100', 'z-30');
+                } else {
+                    screenEl.classList.remove('opacity-100', 'z-30');
+                    screenEl.classList.add('opacity-0', 'pointer-events-none');
+                }
+            });
+
+            // Atualização dos botões ativos do menu do telemóvel
+            updateActiveMenuTab(screenId);
+        }
+
+        // Realce cromático da aba selecionada no menu de rodapé
+        function updateActiveMenuTab(screenId) {
+            const tabHome = document.getElementById('tab-home');
+            const tabMap = document.getElementById('tab-map');
+            const tabCard = document.getElementById('tab-card');
+
+            // Repor cor neutra inicial
+            [tabHome, tabMap, tabCard].forEach(tab => {
+                if (tab) {
+                    tab.classList.remove('text-brand-light');
+                    tab.classList.add('text-gray-400');
+                }
+            });
+
+            // Aplicar cor ativa de realce
+            if (screenId === 'home' && tabHome) {
+                tabHome.classList.add('text-brand-light');
+                tabHome.classList.remove('text-gray-400');
+            } else if (screenId === 'map' && tabMap) {
+                tabMap.classList.add('text-brand-light');
+                tabMap.classList.remove('text-gray-400');
+            } else if (screenId === 'card' && tabCard) {
+                tabCard.classList.add('text-brand-light');
+                tabCard.classList.remove('text-gray-400');
+            }
+        }
+
+        // Simulação de carregamento de saldo no cartão digital
+        function rechargeCredits() {
+            walletBalance += 20.00;
+            // Atualizar valores formatados no DOM do cartão
+            document.getElementById('card-balance').innerText = `R$ ${walletBalance.toFixed(2).replace('.', ',')}`;
+            // Apresentação de feedback de sucesso
+            showToastNotification(
+                "DAFI'S", 
+                `Carregamento realizado com sucesso! Novo saldo do cartão: R$ ${walletBalance.toFixed(2).replace('.', ',')}`
+            );
+        }
+
+        // Inicialização do estado básico do protótipo
+        window.onload = function () {
+            navTo('splash');
+        };
+    </script>
+</body>
+</html>
